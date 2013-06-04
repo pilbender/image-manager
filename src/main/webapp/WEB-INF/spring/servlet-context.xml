@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd"
+		>
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<context:annotation-config/>
+	<context:component-scan base-package="net.raescott">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+
+	<!-- Top level view resolver for different types of content.  It uses
+  headers and extensions on the URL.  For example, if the URL has no special ending,
+  then JSP is assumed.  If there is a .json on the end of the URL, then JSON
+  messages are returned. -->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="order" value="1"/>
+		<property name="mediaTypes">
+			<map>
+				<entry key="html" value="text/html"/>
+				<entry key="json" value="application/json" />
+			</map>
+		</property>
+		<property name="viewResolvers">
+			<list>
+				<ref bean="jspViewResolver" />
+				<!--<ref bean="tilesViewResolver" />-->
+			</list>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+					<property name="prefixJson" value="true"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Let's add a default view resolver so we don't have to have everything
+	end in .html in order to pull up JSPs (HTML based web views).
+	Damn it, I can't seem to get this to populate with data. -->
+	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="order" value="2"/>
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- Enable this for integration of file upload functionality -->
+	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver"/>
+
+	<!-- Configuration properties that will be interpolated via Spring's PropertyPlaceholderConfigurer.
+    This allows us to reference these properties in Spring configuration files. -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="propertiesArray">
+			<list>
+				<bean class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+					<property name="locations">
+						<util:list>
+							<value>classpath:image-manager-config.properties</value>
+						</util:list>
+					</property>
+				</bean>
+			</list>
+		</property>
+		<property name="ignoreUnresolvablePlaceholders" value="false"/>
+	</bean>
+
+	<!-- Properties Loading -->
+	<!-- Creates a java.util.Properties instance with values loaded from the supplied location -->
+	<util:properties id="config" location="classpath:image-manager-config.properties"/>
+
+	<bean id="log4jInitializer" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod">
+			<value>org.springframework.util.Log4jConfigurer.initLogging</value>
+		</property>
+		<property name="arguments">
+			<list>
+				<value>classpath:image-manager-logging.properties</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>
