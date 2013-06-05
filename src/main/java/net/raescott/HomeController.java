@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -41,20 +41,24 @@ public class HomeController {
 		ImageDto imageDto = new ImageDto();
 		//LobContent image = new LobContent(file.getContentType(), file.getOriginalFilename(), file.getSize(), file.getBytes());
 
+		/*
 		if (image.getSize() > 0) {
 			Image rawImage = Toolkit.getDefaultToolkit().createImage(image.getBytes());
 			BufferedImage bufferedImage = imageUtils.toBufferedImage(rawImage);
-			//if (bufferedImage.getHeight() > maxImageHeight || bufferedImage.getWidth() > maxImageWidth) {
-			//	bufferedImage = Crop.scalePreserveAspectRatio(bufferedImage, maxImageWidth, maxImageHeight);
+			if (bufferedImage.getHeight() > maxImageHeight || bufferedImage.getWidth() > maxImageWidth) {
+				bufferedImage = Crop.scalePreserveAspectRatio(bufferedImage, maxImageWidth, maxImageHeight);
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				ImageIO.write(bufferedImage, "PNG", baos);
 				byte[] bytesOut = baos.toByteArray();
-				//image.setContentType("image/png");
-				//image.setContentSize(bytesOut.length);
-				//image.setData(bytesOut);
-			//}
+				image.setContentType("image/png");
+				image.setContentSize(bytesOut.length);
+				image.setData(bytesOut);
 		}
-
+		*/
+		Image rawImage = Toolkit.getDefaultToolkit().createImage(image.getBytes());
+		BufferedImage bufferedImage = imageUtils.toBufferedImage(rawImage);
+		File outputFile = new File(name);
+		ImageIO.write(bufferedImage, "jpg", outputFile);
 
 		return "home";
 	}
