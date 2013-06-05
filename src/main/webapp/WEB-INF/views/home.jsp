@@ -13,6 +13,18 @@
 <!-- Begin home.jsp -->
 <h2>Image Upload Manager</h2>
 
+<form action="<c:url value="/" />" method="post" enctype="multipart/form-data" >
+	<p>
+		Filename: <input name="name" />
+	</p>
+	<p>
+		Image: <input type="file" name="image" />
+	</p>
+	<p>
+		<input type="submit" value="Upload" />
+	</p>
+</form>
+
 <!-- End home.jsp -->
 </body>
 
