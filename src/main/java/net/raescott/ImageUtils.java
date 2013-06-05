@@ -34,7 +34,7 @@ public class ImageUtils {
 			GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
 			bufferedImage = graphicsConfiguration.createCompatibleImage(image.getWidth(null), image.getHeight(null), transparency);
 		} catch (HeadlessException e) {
-			logger.error("Image processing error, perhaps you need to add: JAVA_OPTS=\"-Djava.awt.headless=true to your Tomcat installation's catalina.sh");
+			logger.error("Image processing error, perhaps you need to add: JAVA_OPTS=\"-Djava.awt.headless=true to your Tomcat installation's catalina.sh\"");
 			logger.error(e.getMessage());
 		}
 		if (bufferedImage == null) {
