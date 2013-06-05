@@ -17,6 +17,12 @@ import java.awt.image.PixelGrabber;
 public class ImageUtils {
 	private static final Logger logger = LoggerFactory.getLogger(ImageUtils.class);
 
+	/**
+	 * Take a raw image and convert it to a <code>BufferedImage</code>.  <code>BufferedImage</code> is the central
+	 * image format within the Java APIs.
+	 * @param image
+	 * @return
+	 */
 	public BufferedImage toBufferedImage(Image image) {
 		if (image instanceof BufferedImage) {
 			return (BufferedImage) image;
