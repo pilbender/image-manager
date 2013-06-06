@@ -57,9 +57,14 @@ public class HomeController {
 		*/
 		Image rawImage = Toolkit.getDefaultToolkit().createImage(image.getBytes());
 		BufferedImage bufferedImage = imageUtils.toBufferedImage(rawImage);
-		File outputFile = new File(name);
-		String originalFilename = imageUtils.getFilenameWithoutExtension(image.getOriginalFilename());
+
+		String outputFilenameWithoutExtension = imageUtils.getFilenameWithoutExtension(name);
+		String originalFilename = image.getOriginalFilename();
 		String extension = imageUtils.getFilenameExtension(originalFilename); // Should be jpg, png, or gif
+		StringBuilder outputFilename = new StringBuilder();
+		outputFilename.append(outputFilenameWithoutExtension).append(".").append(extension);
+		File outputFile = new File(outputFilename.toString());
+
 		ImageIO.write(bufferedImage, extension, outputFile);
 
 		return "home";
