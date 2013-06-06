@@ -78,4 +78,34 @@ public class ImageUtils {
 		ColorModel colorModel = pixelGrabber.getColorModel();
 		return colorModel.hasAlpha();
 	}
+
+	/**
+	 * Return the filename extension for a given file.  If the file has not extension, an
+	 * empty string is returned.
+	 *
+	 * @param name
+	 * @return
+	 */
+	public String getFilenameExtension(String name) {
+		if (name.contains(".")) {
+			Integer extensionIndex = name.lastIndexOf('.') + 1;
+			return name.substring(extensionIndex);
+		} else {
+			return "";
+		}
+	}
+
+	/**
+	 * Return the filename without it's extension for a given file name.
+	 * @param name
+	 * @return
+	 */
+	public String getFilenameWithoutExtension(String name) {
+		if (name.contains(".")) {
+			Integer extensionIndex = name.lastIndexOf('.');
+			return name.substring(0, extensionIndex);
+		} else {
+			return name;
+		}
+	}
 }
